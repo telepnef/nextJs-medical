@@ -49,9 +49,9 @@ export function SidebarLayout({ navbar, sidebar, children }) {
   let [showSidebar, setShowSidebar] = useState(false);
 
   return (
-    <div className="bg-primary-light_2 relative isolate flex min-h-svh w-full max-lg:flex-col">
+    <div className="relative isolate flex min-h-svh w-full bg-primary-light_2 max-lg:flex-col">
       {/* Sidebar on desktop */}
-      <div className="border-primary-gray_1 fixed inset-y-0 left-0 w-72 border-r border-solid max-lg:hidden">
+      <div className="fixed inset-y-0 left-0 w-72 border-r border-solid border-primary-gray_1 max-lg:hidden">
         {sidebar}
       </div>
 
@@ -76,8 +76,8 @@ export function SidebarLayout({ navbar, sidebar, children }) {
       {/* Content */}
       <main className="flex flex-1 flex-col pb-2 lg:min-w-0 lg:pl-72 lg:pt-4">
         <Notifications />
-        <div className="bg-primary-light_3 grow px-6 py-4 lg:px-10">
-          <div className="mx-auto max-w-6xl">{children}</div>
+        <div className="grow bg-primary-light_3 px-6 py-4 lg:px-10">
+          <div className="mx-auto max-w-[75rem]">{children}</div>
         </div>
       </main>
     </div>

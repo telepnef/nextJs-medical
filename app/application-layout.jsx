@@ -1,21 +1,13 @@
 "use client";
 
 import Image from "next/image";
-import { Avatar } from "./components/catalyst/avatar";
 import {
   Dropdown,
   DropdownButton,
-  DropdownDivider,
   DropdownItem,
   DropdownLabel,
   DropdownMenu,
 } from "./components/catalyst/dropdown";
-import {
-  Navbar,
-  NavbarItem,
-  NavbarSection,
-  NavbarSpacer,
-} from "./components/catalyst/navbar";
 import {
   Sidebar,
   SidebarBody,
@@ -28,16 +20,11 @@ import {
 } from "./components/catalyst/sidebar";
 import { SidebarLayout } from "./components/catalyst/sidebar-layout";
 
-import {
-  ArrowRightStartOnRectangleIcon,
-  ChevronDownIcon,
-  LightBulbIcon,
-  ShieldCheckIcon,
-  UserCircleIcon,
-} from "@heroicons/react/16/solid";
+import { ChevronDownIcon } from "@heroicons/react/16/solid";
 import LogoutButton from "./components/logout";
 
 import { Cog8ToothIcon } from "@heroicons/react/24/outline";
+import clsx from "clsx";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import {
@@ -48,31 +35,6 @@ import {
   SubscriptionsIcon,
   UnsubscribedIcon,
 } from "./components/svg-icons";
-
-function AccountDropdownMenu({ anchor }) {
-  return (
-    <DropdownMenu className="min-w-72" anchor={anchor}>
-      <DropdownItem href="#">
-        <UserCircleIcon />
-        <DropdownLabel>My account</DropdownLabel>
-      </DropdownItem>
-      <DropdownDivider />
-      <DropdownItem href="#">
-        <ShieldCheckIcon />
-        <DropdownLabel>Privacy policy</DropdownLabel>
-      </DropdownItem>
-      <DropdownItem href="#">
-        <LightBulbIcon />
-        <DropdownLabel>Share feedback</DropdownLabel>
-      </DropdownItem>
-      <DropdownDivider />
-      <DropdownItem href="#">
-        <ArrowRightStartOnRectangleIcon />
-        <DropdownLabel>Sign out</DropdownLabel>
-      </DropdownItem>
-    </DropdownMenu>
-  );
-}
 
 export function ApplicationLayout({ children }) {
   const ref = useRef();
@@ -95,23 +57,10 @@ export function ApplicationLayout({ children }) {
 
   return (
     <SidebarLayout
-      navbar={
-        <Navbar>
-          <NavbarSpacer />
-          <NavbarSection>
-            <Dropdown>
-              <DropdownButton as={NavbarItem}>
-                <Avatar src="/logo.png" square width={67} height={50} />
-              </DropdownButton>
-              <AccountDropdownMenu anchor="bottom end" />
-            </Dropdown>
-          </NavbarSection>
-        </Navbar>
-      }
       sidebar={
         <Sidebar>
           <SidebarHeader className="items-center border-none">
-            <Image src="/logo.png" width={67} height={50} />
+            <Image src="/logo.png" width={67} height={50} alt="Feeltect" />
             <SidebarLabel className="text-xs font-medium uppercase leading-6 tracking-[1px] text-primary-secondary_green">
               Tight Alright Platform
             </SidebarLabel>
@@ -127,11 +76,10 @@ export function ApplicationLayout({ children }) {
                       pathname === "/dashboard/unallocated" ||
                       pathname === "/dashboard/allocated"
                     }
-                    className={
-                      activeMenu
-                        ? "block bg-primary-primary_light pb-[5.5rem]"
-                        : "block"
-                    }
+                    className={clsx(
+                      activeMenu && "bg-primary-primary_light pb-[5.5rem]",
+                      "block",
+                    )}
                     onClick={handleActiveMenuItem}
                   >
                     <SubscribedIcon />

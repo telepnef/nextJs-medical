@@ -51,9 +51,9 @@ const Filters = () => {
           </span>
         </Subheading>
 
-        <MultiRange reading="C" />
-        <MultiRange reading="B1" />
-        <MultiRange reading="B" />
+        <MultiRange reading="C" measure="%" />
+        <MultiRange reading="B1" measure="%" />
+        <MultiRange reading="B" measure="%" />
 
         <Subheading
           className="!text-lg !font-bold uppercase !leading-[30px] !text-black"

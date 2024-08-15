@@ -47,7 +47,7 @@ export function DropdownItem({ className, ...props }) {
   let classes = clsx(
     className,
     // Base styles
-    "group cursor-default px-3.5 py-2.5 focus:outline-none sm:px-3 sm:py-1.5",
+    "group cursor-pointer px-3.5 py-2.5 focus:outline-none sm:px-3 sm:py-1.5",
     // Text styles
     "text-left text-base font-medium text-primary-tail_grids dark:text-white forced-colors:text-[CanvasText]",
     // Focus
@@ -104,7 +104,7 @@ export function DropdownHeading({ className, ...props }) {
       {...props}
       className={clsx(
         className,
-        "col-span-full grid grid-cols-[1fr,auto] gap-x-12 px-3.5 pb-1 pt-2 text-sm/5 font-medium text-zinc-500 sm:px-3 sm:text-xs/5 dark:text-zinc-400",
+        "col-span-full grid grid-cols-[1fr,auto] gap-x-12 px-3.5 pb-1 pt-2 text-sm/5 font-medium text-zinc-500 dark:text-zinc-400 sm:px-3 sm:text-xs/5",
       )}
     />
   );
@@ -116,7 +116,7 @@ export function DropdownDivider({ className, ...props }) {
       {...props}
       className={clsx(
         className,
-        "col-span-full mx-3.5 my-1 h-px border-0 bg-zinc-950/5 sm:mx-3 dark:bg-white/10 forced-colors:bg-[CanvasText]",
+        "col-span-full mx-3.5 my-1 h-px border-0 bg-zinc-950/5 dark:bg-white/10 sm:mx-3 forced-colors:bg-[CanvasText]",
       )}
     />
   );
@@ -140,7 +140,7 @@ export function DropdownDescription({ className, ...props }) {
       {...props}
       className={clsx(
         className,
-        "col-span-2 col-start-2 row-start-2 text-sm/5 text-zinc-500 group-data-[focus]:text-white sm:text-xs/5 dark:text-zinc-400 forced-colors:group-data-[focus]:text-[HighlightText]",
+        "col-span-2 col-start-2 row-start-2 text-sm/5 text-zinc-500 group-data-[focus]:text-white dark:text-zinc-400 sm:text-xs/5 forced-colors:group-data-[focus]:text-[HighlightText]",
       )}
     />
   );

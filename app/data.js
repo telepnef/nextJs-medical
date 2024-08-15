@@ -6,6 +6,49 @@ export function getRecentDevices() {
   return getDevices().slice(0, 10);
 }
 
+export const dateValues = [
+  {
+    value: 1,
+    label: "Last hour",
+  },
+  {
+    value: 4,
+    label: "Last 4 hours",
+  },
+  {
+    value: 12,
+    label: "Last 12 hours",
+  },
+  {
+    value: 24,
+    label: "Last 24 hours",
+  },
+  {
+    value: 56,
+    label: "Last 7 days",
+  },
+  {
+    value: 120,
+    label: "Last 15 days",
+  },
+  {
+    value: 240,
+    label: "Last 30 days",
+  },
+  {
+    value: 720,
+    label: "Last 3 months",
+  },
+  {
+    value: 1440,
+    label: "Last 6 months",
+  },
+  {
+    value: 2880,
+    label: "Last 1 year",
+  },
+];
+
 export function getDevices() {
   return [
     {
@@ -19,6 +62,22 @@ export function getDevices() {
       b_reading_move: "10",
       last_change: "06-30-2024",
       last_reading: "07-01-2024",
+      status: true,
+      bandage_name: "3M Coban",
+    },
+    {
+      id: 112234,
+      name: "User 2 - Left Leg",
+      c_reading: "85",
+      c_reading_move: "-15",
+      b1_reading: "-20",
+      b1_reading_move: "5",
+      b_reading: "23",
+      b_reading_move: "4",
+      last_change: "06-18-2024",
+      last_reading: "07-01-2024",
+      status: true,
+      bandage_name: "3M Coban",
     },
   ];
 }

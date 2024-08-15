@@ -4,6 +4,7 @@ module.exports = {
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./node_modules/flowbite/**/*.js",
   ],
   theme: {
     extend: {
@@ -18,6 +19,9 @@ module.exports = {
           primary_green: "#0CB5BA",
           secondary_green: "#038D92",
           green_3: "#4CC2CB",
+          green_4: "#219653",
+          green_5: "#047376",
+          green_light_1: "#0CB5BA0A",
           primary_red: "#E3616E",
           tail_grids: "#637381",
           dark: "#2A2A2A",
@@ -46,5 +50,9 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    require("flowbite/plugin")({
+      charts: true,
+    }),
+  ],
 };

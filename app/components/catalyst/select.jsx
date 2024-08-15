@@ -22,7 +22,7 @@ export const Select = forwardRef(function Select(
         // Disabled state
         "has-[[data-disabled]]:opacity-50 before:has-[[data-disabled]]:bg-zinc-950/5 before:has-[[data-disabled]]:shadow-none",
         // Typography
-        "text-primary-midnight text-base font-semibold placeholder:font-normal placeholder:text-zinc-500 dark:text-white dark:*:text-white",
+        "text-base font-semibold text-primary-midnight placeholder:font-normal placeholder:text-zinc-500 dark:text-white dark:*:text-white",
       ])}
     >
       <Headless.Select
@@ -31,7 +31,7 @@ export const Select = forwardRef(function Select(
         {...props}
         className={clsx([
           // Basic layout
-          `relative block w-full appearance-none rounded ${small ? "py-[calc(theme(spacing[2])-1px)]" : "py-[calc(theme(spacing[2.5])-0.5px)]"} `,
+          `relative block w-full appearance-none rounded !bg-none ${small ? "py-[calc(theme(spacing[2])-1px)]" : "py-[calc(theme(spacing[2.5])-0.5px)]"} `,
           // Horizontal padding
           multiple
             ? "px-[calc(theme(spacing[3.5])-1px)] sm:px-[calc(theme(spacing.3)-1px)]"
@@ -39,7 +39,7 @@ export const Select = forwardRef(function Select(
           // Options (multi-select)
           "[&_optgroup]:font-semibold",
           // Border
-          "border-primary-gray_3 border data-[hover]:border-zinc-950/20 dark:border-white/10 dark:data-[hover]:border-white/20",
+          "border border-primary-gray_3 data-[hover]:border-zinc-950/20 dark:border-white/10 dark:data-[hover]:border-white/20",
           // Background color
           "bg-transparent dark:bg-white/5 dark:*:bg-zinc-800",
           // Hide default focus styles
