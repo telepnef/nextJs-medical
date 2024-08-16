@@ -1,6 +1,8 @@
-import ApexCharts from "apexcharts";
-import { useEffect, useRef } from "react";
+"use client";
+
+import dynamic from "next/dynamic";
 import { Subheading } from "./catalyst/heading";
+const ApexChart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
 const Chart = ({ reading, name, color }) => {
   const options = {
@@ -70,19 +72,6 @@ const Chart = ({ reading, name, color }) => {
       show: false,
     },
   };
-  const chart = useRef(null);
-
-  useEffect(() => {
-    if (
-      chart &&
-      chart.current &&
-      chart.current.innerHTML === "" &&
-      typeof ApexCharts !== "undefined"
-    ) {
-      const newChart = new ApexCharts(chart.current, options);
-      newChart.render();
-    }
-  }, []);
 
   return (
     <div className="mb-6 w-full max-w-full rounded-lg border border-solid border-primary-gray_1 bg-white p-4">
@@ -95,7 +84,14 @@ const Chart = ({ reading, name, color }) => {
         </Subheading>
         <div className="text-base leading-6">Pressure (mmHg)</div>
       </div>
-      <div className="[&_text:first-child]:translate-x-3.5" ref={chart}></div>
+      <ApexChart
+        className="[&_text:first-child]:translate-x-3.5"
+        type="line"
+        options={options}
+        series={options.series}
+        height={options.chart.height}
+        width={options.chart.width}
+      />
     </div>
   );
 };

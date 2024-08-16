@@ -19,10 +19,10 @@ export default function Login() {
         <div className="relative hidden w-0 basis-2/4 lg:block">
           <Image
             className="max-h-screen w-full"
-            src={`/login.jpg`}
+            src="/login.jpg"
             alt="Login"
-            width="720"
-            height="870"
+            width={720}
+            height={870}
           />
         </div>
         <div className="flex basis-2/4 flex-col justify-center px-4 py-12 sm:px-6 lg:px-20 xl:px-24">
@@ -56,7 +56,7 @@ export default function Login() {
                       type="email"
                       required
                       autoComplete="email"
-                      className="ring-primary-gray_3 block w-full rounded-md border-0 py-2 pl-3.5 text-primary-oil_direct_black ring-1 ring-inset placeholder:text-gray-400 focus:ring-inset focus:ring-primary-primary_green sm:text-sm sm:leading-6"
+                      className="block w-full rounded-md border-0 py-2 pl-3.5 text-primary-oil_direct_black ring-1 ring-inset ring-primary-gray_3 placeholder:text-gray-400 focus:ring-inset focus:ring-primary-primary_green sm:text-sm sm:leading-6"
                     />
                   </div>
                 </div>
@@ -75,7 +75,7 @@ export default function Login() {
                       type="password"
                       required
                       autoComplete="current-password"
-                      className="ring-primary-gray_3 block w-full rounded-md border-0 py-2 pl-3.5 text-primary-oil_direct_black ring-1 ring-inset placeholder:text-gray-400 focus:ring-inset focus:ring-primary-primary_green sm:text-sm sm:leading-6"
+                      className="block w-full rounded-md border-0 py-2 pl-3.5 text-primary-oil_direct_black ring-1 ring-inset ring-primary-gray_3 placeholder:text-gray-400 focus:ring-inset focus:ring-primary-primary_green sm:text-sm sm:leading-6"
                     />
                   </div>
                 </div>
