@@ -3,6 +3,9 @@
 import Image from "next/image";
 import { redirect } from "next/navigation";
 import { useFormState, useFormStatus } from "react-dom";
+import loginImage from "../public/login.jpg";
+import logoImage from "../public/logo.png";
+
 import { authenticate } from "./lib/actions";
 
 export default function Login() {
@@ -17,20 +20,14 @@ export default function Login() {
     <>
       <div className="flex min-h-full justify-center lg:justify-normal">
         <div className="relative hidden w-0 basis-2/4 lg:block">
-          <Image
-            className="max-h-screen w-full"
-            src="/login.jpg"
-            alt="Login"
-            width={720}
-            height={870}
-          />
+          <Image className="max-h-screen w-full" src={loginImage} alt="Login" />
         </div>
         <div className="flex basis-2/4 flex-col justify-center px-4 py-12 sm:px-6 lg:px-20 xl:px-24">
           <div className="mx-auto w-full max-w-sm lg:w-96">
             <div>
               <Image
                 className="mx-auto"
-                src={`/logo.png`}
+                src={logoImage}
                 alt="FeelTect"
                 width="128"
                 height="96"
