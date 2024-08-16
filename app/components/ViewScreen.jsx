@@ -22,7 +22,6 @@ import { useState } from "react";
 import { dateValues } from "../data";
 import { Divider } from "./catalyst/divider";
 import { Subheading } from "./catalyst/heading";
-import Chart from "./chart";
 import { Stat } from "./stat";
 import { ActiveIcon, DateSelectorIcon, SelectIcon } from "./svg-icons";
 
@@ -227,9 +226,9 @@ const ViewScreen = ({ device }) => {
               </Dropdown>
             </div>
 
-            <Chart reading="C" name={device.bandage_name} color="#4CC2CB" />
+            {/* <Chart reading="C" name={device.bandage_name} color="#4CC2CB" />
             <Chart reading="B1" name={device.bandage_name} color="#C21A88" />
-            <Chart reading="B" name={device.bandage_name} color="#C69D00" />
+            <Chart reading="B" name={device.bandage_name} color="#C69D00" /> */}
           </div>
         </DialogBody>
       </Dialog>
