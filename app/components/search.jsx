@@ -1,12 +1,12 @@
 import { MagnifyingGlassIcon } from "@heroicons/react/16/solid";
 import { useState } from "react";
+import { dateValues } from "../data";
 import { Field, FieldGroup } from "./catalyst/fieldset";
 import { Subheading } from "./catalyst/heading";
 import { Select } from "./catalyst/select";
 import MultiRange from "./multirange";
 import { FilterIcon } from "./svg-icons";
-
-const Filters = () => {
+const Filters = ({ handleFilters }) => {
   return (
     <>
       <FieldGroup className="basis-[48%] text-left">
@@ -19,9 +19,13 @@ const Filters = () => {
             INVERSE
           </span>
         </Subheading>
-        <MultiRange reading="C" />
-        <MultiRange color="red" reading="B1" />
-        <MultiRange reading="B" />
+        <MultiRange handleRangeChange={handleFilters} reading="C" />
+        <MultiRange
+          handleRangeChange={handleFilters}
+          color="red"
+          reading="B1"
+        />
+        <MultiRange handleRangeChange={handleFilters} reading="B" />
 
         <Subheading
           className="!text-lg !font-bold uppercase !leading-[30px] !text-black"
@@ -37,6 +41,11 @@ const Filters = () => {
             small={true}
           >
             <option value="">Select</option>
+            {dateValues.map((date) => (
+              <option key={date.value} value={date.value}>
+                {date.label}
+              </option>
+            ))}
           </Select>
         </Field>
       </FieldGroup>
@@ -51,32 +60,19 @@ const Filters = () => {
           </span>
         </Subheading>
 
-        <MultiRange reading="C" measure="%" />
-        <MultiRange reading="B1" measure="%" />
-        <MultiRange reading="B" measure="%" />
-
-        <Subheading
-          className="!text-lg !font-bold uppercase !leading-[30px] !text-black"
-          level={3}
-        >
-          LAST Bandage CHANGE
-        </Subheading>
-        <Field>
-          <Select
-            name="start_date"
-            defaultValue=""
-            className="text-sm !font-medium leading-6 text-primary-gray_4"
-            small={true}
-          >
-            <option value="">Select</option>
-          </Select>
-        </Field>
+        <MultiRange handleRangeChange={handleFilters} reading="C" measure="%" />
+        <MultiRange
+          handleRangeChange={handleFilters}
+          reading="B1"
+          measure="%"
+        />
+        <MultiRange handleRangeChange={handleFilters} reading="B" measure="%" />
       </FieldGroup>
     </>
   );
 };
 
-const Search = () => {
+const Search = ({ handleSearch, handleFilters }) => {
   const [isFilterOpened, setIsFilterOpened] = useState(false);
 
   return (
@@ -95,10 +91,13 @@ const Search = () => {
         />
         <input
           id="search-field"
+          onChange={(e) => {
+            handleSearch(e.target.value);
+          }}
           name="search"
           type="search"
           placeholder="Search device or nick name..."
-          className="block h-full border-0 py-4 pl-8 pr-5 outline-none placeholder:text-primary-tail_grids sm:text-sm"
+          className="block h-full border-0 py-4 pl-8 pr-5 placeholder:text-primary-tail_grids focus:border-none focus:shadow-none focus:outline-none focus:ring-0 sm:text-sm"
         />
       </form>
 
@@ -114,7 +113,7 @@ const Search = () => {
         <div
           className={`${isFilterOpened ? "flex" : "hidden"} absolute right-0 top-14 z-50 w-[90vw] cursor-auto flex-col justify-between rounded-md border border-solid border-primary-gray_2 bg-white pb-9 pl-5 pr-11 pt-5 shadow-gray md:flex-row lg:w-[53rem]`}
         >
-          <Filters />
+          <Filters handleFilters={handleFilters} />
         </div>
       </button>
     </div>

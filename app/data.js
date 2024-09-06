@@ -3,7 +3,20 @@ export async function getDevice(id) {
 }
 
 export function getRecentDevices() {
-  return getDevices().slice(0, 10);
+  return [
+    {
+      id: 112233,
+      name: "Sarah B - Left Leg",
+      c_reading: "80",
+      c_reading_move: "-20",
+      b1_reading: "40",
+      b1_reading_move: "-5",
+      b_reading: "23",
+      b_reading_move: "10",
+      last_change: "06-30-2024",
+      last_reading: "07-01-2024",
+    },
+  ];
 }
 
 export const dateValues = [
@@ -49,37 +62,25 @@ export const dateValues = [
   },
 ];
 
-export function getDevices() {
-  return [
+export async function getDevices(token) {
+  return fetch(
+    "https://feeltect.interactive.ie/api/galen/getDevicesInstancesAndData",
     {
-      id: 112233,
-      name: "Sarah B - Left Leg",
-      c_reading: "80",
-      c_reading_move: "-20",
-      b1_reading: "40",
-      b1_reading_move: "-5",
-      b_reading: "23",
-      b_reading_move: "10",
-      last_change: "06-30-2024",
-      last_reading: "07-01-2024",
-      status: true,
-      bandage_name: "3M Coban",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${decodeURIComponent(token)}`,
+      },
+      body: JSON.stringify({
+        deviceId: "f3e87d70-1669-4cb0-bfe0-cc435db543bb",
+        deviceDataModelId: "7203df8b-68c4-4360-bd93-216c6462b539",
+      }),
     },
-    {
-      id: 112234,
-      name: "User 2 - Left Leg",
-      c_reading: "85",
-      c_reading_move: "-15",
-      b1_reading: "-20",
-      b1_reading_move: "5",
-      b_reading: "23",
-      b_reading_move: "4",
-      last_change: "06-18-2024",
-      last_reading: "07-01-2024",
-      status: true,
-      bandage_name: "3M Coban",
-    },
-  ];
+  )
+    .then((response) => response.json())
+    .catch((error) => {
+      console.error(error);
+    });
 }
 
 export async function getEvent(id) {

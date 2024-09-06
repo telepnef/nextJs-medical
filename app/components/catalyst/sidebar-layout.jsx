@@ -76,8 +76,8 @@ export function SidebarLayout({ navbar, sidebar, children }) {
       {/* Content */}
       <main className="flex flex-1 flex-col pb-2 lg:min-w-0 lg:pl-72 lg:pt-4">
         <Notifications />
-        <div className="grow bg-primary-light_3 px-6 py-4 lg:px-10">
-          <div className="mx-auto max-w-[75rem]">{children}</div>
+        <div className="relative grow bg-primary-light_3 px-6 py-4 lg:px-10">
+          <div className="mx-auto max-w-[76rem]">{children}</div>
         </div>
       </main>
     </div>

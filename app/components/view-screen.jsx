@@ -60,21 +60,21 @@ const ViewScreen = ({ device }) => {
 
         <DialogBody className="border-t border-solid border-primary-gray_1 pb-[34px]">
           <DialogTitle className="mb-4 flex items-center pl-11 pr-9 pt-7 !text-[26px] !font-bold !leading-[30px] text-primary-midnight">
-            Device ID - {id}
+            Device ID - {device.deviceId}
           </DialogTitle>
           <DescriptionList className="border-b border-solid border-primary-gray_1 pb-3 pl-11 pr-9 sm:!grid-cols-[min(42%,theme(spacing.80))_auto]">
             <DescriptionTerm>Nickname</DescriptionTerm>
-            <DescriptionDetails>{device.name}</DescriptionDetails>
+            <DescriptionDetails>{device.nickName || ""}</DescriptionDetails>
 
             <DescriptionTerm>Last Compression Change</DescriptionTerm>
             <DescriptionDetails>
-              1 Day 4hrs ago{" "}
+              {device.lastBandageChange || ""}
               <span className="font-normal">(16:00pm - 03rd March 24)</span>
             </DescriptionDetails>
 
             <DescriptionTerm>Last Recorded</DescriptionTerm>
             <DescriptionDetails>
-              10hrs ago{" "}
+              {device.lastDateRecorded || ""}
               <span className="font-normal">(10:00am - 04rd March 24)</span>
             </DescriptionDetails>
           </DescriptionList>
@@ -148,8 +148,8 @@ const ViewScreen = ({ device }) => {
                 </DescriptionTerm>
                 <DescriptionDetails className="!py-6">
                   <Stat
-                    value={device.c_reading}
-                    change={`${device.c_reading_move}%`}
+                    value={device.current?.top || ""}
+                    change={`${device.percentageDifference?.top || "0%"}`}
                     className="text-primary-tail_grids"
                   />
                 </DescriptionDetails>
@@ -164,8 +164,8 @@ const ViewScreen = ({ device }) => {
                 </DescriptionTerm>
                 <DescriptionDetails className="!py-6">
                   <Stat
-                    value={device.b1_reading}
-                    change={`${device.b1_reading_move}%`}
+                    value={device.current?.middle || ""}
+                    change={`${device.percentageDifference?.middle || "0%"}`}
                     className="text-primary-tail_grids"
                   />
                 </DescriptionDetails>
@@ -180,8 +180,8 @@ const ViewScreen = ({ device }) => {
                 </DescriptionTerm>
                 <DescriptionDetails className="!py-6">
                   <Stat
-                    value={device.b_reading}
-                    change={`${device.b_reading_move}%`}
+                    value={device.current?.bottom || ""}
+                    change={`${device.percentageDifference?.bottom || "0%"}`}
                     className="text-primary-tail_grids"
                   />
                 </DescriptionDetails>
@@ -227,9 +227,9 @@ const ViewScreen = ({ device }) => {
               </Dropdown>
             </div>
 
-            <Chart reading="C" name={device.bandage_name} color="#4CC2CB" />
-            <Chart reading="B1" name={device.bandage_name} color="#C21A88" />
-            <Chart reading="B" name={device.bandage_name} color="#C69D00" />
+            <Chart reading="C" name={device.nickName} color="#4CC2CB" />
+            <Chart reading="B1" name={device.nickName} color="#C21A88" />
+            <Chart reading="B" name={device.nickName} color="#C69D00" />
           </div>
         </DialogBody>
       </Dialog>

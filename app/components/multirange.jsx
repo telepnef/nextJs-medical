@@ -3,20 +3,52 @@ import MultiRangeSlider from "multi-range-slider-react";
 import { useState } from "react";
 import { Checkbox, CheckboxField } from "./catalyst/checkbox";
 import { Field, Fieldset } from "./catalyst/fieldset";
+
 const MultiRange = ({
   color = "green",
   reading,
   measure = "mmHg",
   min = 0,
   max = 100,
+  handleRangeChange,
 }) => {
   const [minValue, setMinValue] = useState(0);
   const [maxValue, setMaxValue] = useState(100);
   const [isInverted, setIsInverted] = useState(false);
+  const objectReadingName =
+    reading === "C" ? "top" : reading === "B1" ? "middle" : "bottom";
 
   const handleMinMax = (e) => {
     setMinValue(e.minValue);
     setMaxValue(e.maxValue);
+
+    if (
+      handleRangeChange &&
+      (minValue !== e.minValue || maxValue !== e.maxValue)
+    ) {
+      console.log(e.minValue);
+      console.log(e.maxValue);
+      console.log(reading);
+
+      handleRangeChange(
+        objectReadingName,
+        measure,
+        e.minValue,
+        e.maxValue,
+        isInverted,
+      );
+    }
+  };
+
+  const handleInverted = () => {
+    setIsInverted(!isInverted);
+    handleRangeChange(
+      objectReadingName,
+      measure,
+      minValue,
+      maxValue,
+      !isInverted,
+    );
   };
 
   const colors = {
@@ -37,7 +69,7 @@ const MultiRange = ({
       <div className="mb-3 text-[21px] font-medium leading-[14px] text-black">
         {reading}
       </div>
-      <div className="text-primary-dark_1 mt-3 text-[21px] leading-7">
+      <div className="mt-3 text-[21px] leading-7 text-primary-dark_1">
         {minValue} - {maxValue}
       </div>
       <div className="flex items-start justify-between">
@@ -52,7 +84,7 @@ const MultiRange = ({
             ruler={false}
             className={clsx(
               //base
-              "[&_.label]:!text-primary-gray_8 !border-none !shadow-none [&_.bar-left]:!p-0 [&_.bar]:h-1 [&_.label]:!w-max [&_.labels]:!m-[15px_-10px_-22px_-10px]",
+              "!border-none !shadow-none [&_.bar-left]:!p-0 [&_.bar]:h-1 [&_.label]:!w-max [&_.label]:!text-primary-gray_8 [&_.labels]:!m-[15px_-10px_-22px_-10px]",
               // Inner styles
               "[&_.thumb-left]:before:!mx-[-5px] [&_.thumb]:before:!my-[-5px] [&_.thumb]:before:!h-[15px] [&_.thumb]:before:!w-[15px] [&_.thumb]:before:!border-none [&_.thumb]:before:!shadow-none",
               // Outter styles
@@ -70,12 +102,7 @@ const MultiRange = ({
           />
         </Field>
         <CheckboxField>
-          <Checkbox
-            onChange={() => {
-              console.log("infw");
-              setIsInverted(!isInverted);
-            }}
-          />
+          <Checkbox onChange={handleInverted} />
         </CheckboxField>
       </div>
     </Fieldset>

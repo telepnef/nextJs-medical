@@ -2,7 +2,14 @@
 import { Heading } from "./catalyst/heading";
 import Search from "./search";
 
-const Header = ({ children, title, description }) => {
+const Header = ({
+  children,
+  title,
+  description,
+  devices,
+  handleSearch,
+  handleFilters,
+}) => {
   return (
     <>
       <div className="flex items-center justify-between">
@@ -15,7 +22,11 @@ const Header = ({ children, title, description }) => {
         {children}
       </div>
 
-      <Search />
+      <Search
+        devices={devices}
+        handleSearch={handleSearch}
+        handleFilters={handleFilters}
+      />
     </>
   );
 };

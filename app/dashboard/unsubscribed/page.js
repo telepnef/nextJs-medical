@@ -1,6 +1,5 @@
 "use client";
 
-import ViewScreen from "@/app/components/ViewScreen";
 import {
   Table,
   TableBody,
@@ -10,6 +9,7 @@ import {
   TableRow,
 } from "@/app/components/catalyst/table";
 import Header from "@/app/components/header";
+import ViewScreen from "@/app/components/view-screen";
 import { getRecentDevices } from "@/app/data";
 
 export default function Unsubscribed() {

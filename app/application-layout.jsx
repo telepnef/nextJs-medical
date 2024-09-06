@@ -40,7 +40,7 @@ export function ApplicationLayout({ children }) {
   const ref = useRef();
   const pathname = usePathname();
   const [activeMenu, setActive] = useState(false);
-  const [user, setUser] = useState();
+  const [user, setUser] = useState({});
 
   const handleActiveMenuItem = () => {
     console.log("isActive", activeMenu);
@@ -53,7 +53,20 @@ export function ApplicationLayout({ children }) {
         setActive(false);
       }
     });
-  });
+
+    const getUser = async () => {
+      const userName = await cookieStore.get("userName");
+      const userEmail = await cookieStore.get("userEmail");
+
+      console.log(userName, userEmail);
+      setUser({
+        userName: decodeURIComponent(userName.value),
+        userEmail: decodeURIComponent(userEmail.value),
+      });
+    };
+
+    getUser();
+  }, []);
 
   return (
     <SidebarLayout
@@ -166,10 +179,10 @@ export function ApplicationLayout({ children }) {
               <span className="flex min-w-0 items-center gap-3">
                 <span className="min-w-0">
                   <span className="block truncate text-base font-medium dark:text-white">
-                    Erica
+                    {user?.userName}
                   </span>
                   <span className="block truncate text-sm font-normal dark:text-zinc-400">
-                    erica@example.com
+                    {user?.userEmail}
                   </span>
                 </span>
               </span>

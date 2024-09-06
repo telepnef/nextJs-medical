@@ -1,6 +1,5 @@
 "use client";
 
-import ViewScreen from "@/app/components/ViewScreen";
 import Button from "@/app/components/button";
 import {
   Dialog,
@@ -25,22 +24,151 @@ import {
   TableRow,
 } from "@/app/components/catalyst/table";
 import Header from "@/app/components/header";
+import Loader from "@/app/components/loader";
 import { Stat } from "@/app/components/stat";
 import {
   AllocateIcon,
   AllocateNewIcon,
   DownloadIcon,
 } from "@/app/components/svg-icons";
-import { getRecentDevices } from "@/app/data";
-import { useState } from "react";
+import ViewScreen from "@/app/components/view-screen";
+import { getDevices } from "@/app/data";
+import { useEffect, useState } from "react";
 
 export default function Allocted() {
-  const devices = getRecentDevices();
   const [isAllocateOpen, setIsAllocateOpen] = useState(false);
+  const [devices, setDevices] = useState([]);
+  const [filtered, setFiltered] = useState([]);
+  const [searchString, setSearchString] = useState("");
+  const [readingFilters, setReadingFilters] = useState(null);
 
-  return (
+  useEffect(() => {
+    async function fetchDevices() {
+      const token = await cookieStore.get("currentUser");
+      let res = await getDevices(token.value);
+      setDevices(res);
+      setFiltered(res);
+      console.log(res);
+    }
+
+    fetchDevices();
+  }, []);
+
+  const filterData = () => {
+    if (searchString.trim() === "" && readingFilters === null) {
+      setFiltered(devices);
+      return;
+    }
+
+    // filter by search
+    let filteredDevices = devices.filter((device) => {
+      if (
+        device.deviceId.includes(searchString) ||
+        device.nickName.includes(searchString)
+      ) {
+        return device;
+      }
+
+      return;
+    });
+
+    filteredDevices = filteredDevices.filter((device) => {
+      let isInTheRange = true;
+
+      for (let readingName in readingFilters) {
+        for (let measureName in readingFilters[readingName]) {
+          let measureType = "current";
+
+          if (measureName === "%") {
+            measureType = "percentageDifference";
+          }
+
+          if (!device[measureType]) {
+            return;
+          }
+
+          const isInverted =
+            readingFilters[readingName][measureName].isInverted;
+          const deviceCurrentReading = Math.abs(
+            parseInt(
+              device[measureType][readingName].toString().replaceAll("%", ""),
+            ),
+          );
+          const filterReading = readingFilters[readingName][measureName];
+
+          if (!isInverted) {
+            if (
+              deviceCurrentReading < filterReading.minValue ||
+              deviceCurrentReading > filterReading.maxValue
+            ) {
+              return;
+            }
+          } else if (
+            deviceCurrentReading > filterReading.minValue &&
+            deviceCurrentReading < filterReading.maxValue
+          ) {
+            return;
+          }
+        }
+      }
+
+      if (isInTheRange) {
+        return device;
+      }
+
+      return;
+    });
+
+    setFiltered(filteredDevices);
+  };
+
+  useEffect(() => {
+    console.log(readingFilters, "readingFilters");
+    console.log(searchString, "searchString");
+    filterData();
+  }, [readingFilters, searchString]);
+
+  const handleSearch = (searchText) => {
+    setSearchString(searchText.trim());
+  };
+
+  const handleFilters = (reading, measure, minValue, maxValue, isInverted) => {
+    setReadingFilters((prev) => {
+      let prevMeasure = "mmHg";
+      let prevMeasureObject = null;
+
+      if (measure === "mmHg") {
+        prevMeasure = "%";
+      }
+
+      if (prev && prev[reading] && prev[reading][prevMeasure]) {
+        prevMeasureObject = {
+          [prevMeasure]: {
+            ...prev[reading][prevMeasure],
+          },
+        };
+      }
+
+      return {
+        ...prev,
+        [reading]: {
+          [measure]: {
+            minValue: minValue,
+            maxValue: maxValue,
+            isInverted: isInverted,
+          },
+          ...prevMeasureObject,
+        },
+      };
+    });
+  };
+
+  return devices.length ? (
     <>
       <Header
+        devices
+        handleSearch={handleSearch}
+        handleFilters={handleFilters}
         title="Allocated Devices"
         description="These are all of the active Tight Alright devices that are currently paired with a patient."
       >
@@ -135,19 +263,28 @@ export default function Allocted() {
             <TableHeader>Device ID</TableHeader>
             <TableHeader>Nick Name</TableHeader>
             <TableHeader className="bg-primary-green_light_1">
-              C
+              C{" "}
+              <i className="text-[8px] font-semibold uppercase text-primary-tail_grids">
+                (Top)
+              </i>
               <div className="-mt-2 text-[8px] font-bold uppercase tracking-[1px] text-primary-tail_grids">
                 Last Reading
               </div>
             </TableHeader>
             <TableHeader className="bg-primary-green_light_1">
-              B1
+              B1{" "}
+              <i className="text-[8px] font-semibold uppercase text-primary-tail_grids">
+                (Middle)
+              </i>
               <div className="-mt-2 text-[8px] font-bold uppercase tracking-[1px] text-primary-tail_grids">
                 Last Reading
               </div>
             </TableHeader>
             <TableHeader className="bg-primary-green_light_1">
-              B
+              B{" "}
+              <i className="text-[8px] font-semibold uppercase text-primary-tail_grids">
+                (Bottom)
+              </i>
               <div className="-mt-2 text-[8px] font-bold uppercase tracking-[1px] text-primary-tail_grids">
                 Last Reading
               </div>
@@ -160,38 +297,38 @@ export default function Allocted() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {devices.map((device) => (
-            <TableRow key={device.id} title={`Device #${device.id}`}>
-              <TableCell>{device.id}</TableCell>
-              <TableCell>{device.name}</TableCell>
+          {filtered?.map((device) => (
+            <TableRow
+              className="whitespace-break-spaces"
+              key={device.deviceId}
+              title={`Device #${device.deviceId}`}
+            >
+              <TableCell>{device.deviceId || ""}</TableCell>
+              <TableCell className="whitespace-break-spaces">
+                {device.nickName || ""}
+              </TableCell>
               <TableCell className="bg-primary-green_light_1">
                 <Stat
-                  value={device.c_reading}
-                  change={`${device.c_reading_move}%`}
+                  value={device.current?.top || 0}
+                  change={`${device.percentageDifference?.top || "0%"}`}
                 />
               </TableCell>
               <TableCell className="bg-primary-green_light_1">
                 <Stat
-                  value={device.b1_reading}
-                  change={`${device.b1_reading_move}%`}
+                  value={device.current?.middle || 0}
+                  change={`${device.percentageDifference?.middle || "0%"}`}
                 />
               </TableCell>
               <TableCell className="bg-primary-green_light_1">
                 <Stat
-                  value={device.b_reading}
-                  change={`${device.b_reading_move}%`}
+                  value={device.current?.bottom || 0}
+                  change={`${device.percentageDifference?.bottom || "0%"}`}
                 />
               </TableCell>
-              <TableCell>
-                {new Date(
-                  new Date() - new Date(device.last_change),
-                ).getHours() + " hrs ago"}
+              <TableCell className="whitespace-break-spaces">
+                {device.lastBandageChange || ""}
               </TableCell>
-              <TableCell>
-                {new Date(
-                  new Date() - new Date(device.last_reading),
-                ).getHours() + " hrs ago"}
-              </TableCell>
+              <TableCell>{device.lastDateRecorded || ""}</TableCell>
 
               <TableCell>
                 <ViewScreen device={device} />
@@ -201,5 +338,7 @@ export default function Allocted() {
         </TableBody>
       </Table>
     </>
+  ) : (
+    <Loader />
   );
 }
