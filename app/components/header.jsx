@@ -9,6 +9,7 @@ const Header = ({
   devices,
   handleSearch,
   handleFilters,
+  handleThreshold,
 }) => {
   return (
     <>
@@ -26,6 +27,7 @@ const Header = ({
         devices={devices}
         handleSearch={handleSearch}
         handleFilters={handleFilters}
+        handleThreshold={handleThreshold}
       />
     </>
   );

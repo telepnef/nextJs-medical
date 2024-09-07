@@ -41,6 +41,10 @@ export default function Allocted() {
   const [filtered, setFiltered] = useState([]);
   const [searchString, setSearchString] = useState("");
   const [readingFilters, setReadingFilters] = useState(null);
+  const [threshold, setThreshold] = useState({
+    minValue: 0,
+    maxValue: 100,
+  });
 
   useEffect(() => {
     async function fetchDevices() {
@@ -123,13 +127,18 @@ export default function Allocted() {
   };
 
   useEffect(() => {
-    console.log(readingFilters, "readingFilters");
-    console.log(searchString, "searchString");
     filterData();
   }, [readingFilters, searchString]);
 
   const handleSearch = (searchText) => {
     setSearchString(searchText.trim());
+  };
+
+  const handleThreshold = (reading, measure, minValue, maxValue) => {
+    setThreshold({
+      minValue: minValue,
+      maxValue: maxValue,
+    });
   };
 
   const handleFilters = (reading, measure, minValue, maxValue, isInverted) => {
@@ -169,6 +178,7 @@ export default function Allocted() {
         devices
         handleSearch={handleSearch}
         handleFilters={handleFilters}
+        handleThreshold={handleThreshold}
         title="Allocated Devices"
         description="These are all of the active Tight Alright devices that are currently paired with a patient."
       >
@@ -311,18 +321,21 @@ export default function Allocted() {
                 <Stat
                   value={device.current?.top || 0}
                   change={`${device.percentageDifference?.top || "0%"}`}
+                  threshold={threshold}
                 />
               </TableCell>
               <TableCell className="bg-primary-green_light_1">
                 <Stat
                   value={device.current?.middle || 0}
                   change={`${device.percentageDifference?.middle || "0%"}`}
+                  threshold={threshold}
                 />
               </TableCell>
               <TableCell className="bg-primary-green_light_1">
                 <Stat
                   value={device.current?.bottom || 0}
                   change={`${device.percentageDifference?.bottom || "0%"}`}
+                  threshold={threshold}
                 />
               </TableCell>
               <TableCell className="whitespace-break-spaces">
