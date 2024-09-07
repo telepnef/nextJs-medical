@@ -2,11 +2,15 @@ import clsx from "clsx";
 import { Badge } from "./catalyst/badge";
 import { StatDown, StatUp } from "./svg-icons";
 
-export function Stat({ title, value, change, className, threshold }) {
+export function Stat({ title, value, change, className, threshold = null }) {
   const changeToNumeric = parseInt(change.replace("%", ""));
-  const isOutsideOfThreshhold =
-    Math.abs(changeToNumeric) < threshold.minValue ||
-    Math.abs(changeToNumeric) > threshold.maxValue;
+  let isOutsideOfThreshhold = false;
+
+  if (threshold !== null) {
+    isOutsideOfThreshhold =
+      Math.abs(changeToNumeric) < threshold.minValue ||
+      Math.abs(changeToNumeric) > threshold.maxValue;
+  }
 
   return (
     <div className={clsx(className, "flex flex-col items-center")}>

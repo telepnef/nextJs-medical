@@ -27,10 +27,6 @@ const MultiRange = ({
       handleRangeChange &&
       (minValue !== e.minValue || maxValue !== e.maxValue)
     ) {
-      console.log(e.minValue);
-      console.log(e.maxValue);
-      console.log(reading);
-
       handleRangeChange(
         objectReadingName,
         measure,
