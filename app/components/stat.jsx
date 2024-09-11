@@ -29,7 +29,9 @@ export function Stat({ title, value, change, className, threshold = null }) {
             <>
               <StatDown
                 className={
-                  isOutsideOfThreshhold && "[&_path]:fill-primary-tail_grids"
+                  isOutsideOfThreshhold
+                    ? "[&_path]:fill-primary-tail_grids"
+                    : ""
                 }
               />
             </>
@@ -37,7 +39,9 @@ export function Stat({ title, value, change, className, threshold = null }) {
             <>
               <StatUp
                 className={
-                  isOutsideOfThreshhold && "[&_path]:fill-primary-tail_grids"
+                  isOutsideOfThreshhold
+                    ? "[&_path]:fill-primary-tail_grids"
+                    : ""
                 }
               />
             </>

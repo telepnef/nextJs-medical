@@ -68,14 +68,19 @@ const ViewScreen = ({ device }) => {
 
             <DescriptionTerm>Last Compression Change</DescriptionTerm>
             <DescriptionDetails>
-              {device.lastBandageChange || ""}
-              <span className="font-normal">(16:00pm - 03rd March 24)</span>
+              {device.lastBandageChange || ""}&nbsp;
+              <span className="font-normal">
+                {" "}
+                ({device.lastBandageChangeTimeStamp || ""})
+              </span>
             </DescriptionDetails>
 
             <DescriptionTerm>Last Recorded</DescriptionTerm>
             <DescriptionDetails>
-              {device.lastDateRecorded || ""}
-              <span className="font-normal">(10:00am - 04rd March 24)</span>
+              {device.lastDateRecorded || ""}&nbsp;
+              <span className="font-normal">
+                ({device.lastDateRecordedTimeStamp || ""})
+              </span>
             </DescriptionDetails>
           </DescriptionList>
 
@@ -93,7 +98,7 @@ const ViewScreen = ({ device }) => {
                   Status
                 </DescriptionTerm>
                 <DescriptionDetails className="!text-base !leading-5 sm:!py-2">
-                  {device.status === true && (
+                  {device.deviceStatus === "Active" && (
                     <div className="flex items-center text-primary-green_4">
                       Active <ActiveIcon className="ml-[14px]" />
                     </div>
@@ -104,14 +109,14 @@ const ViewScreen = ({ device }) => {
                   Start date
                 </DescriptionTerm>
                 <DescriptionDetails className="!text-base !leading-5 sm:!py-2">
-                  06/02/24
+                  06/02/24?
                 </DescriptionDetails>
 
                 <DescriptionTerm className="!text-base !leading-5 sm:!py-2">
                   Duration
                 </DescriptionTerm>
                 <DescriptionDetails className="!text-base !leading-5 sm:!py-2">
-                  33 days
+                  33 days?
                 </DescriptionDetails>
               </DescriptionList>
 
@@ -127,7 +132,7 @@ const ViewScreen = ({ device }) => {
                   Current Bandage
                 </DescriptionTerm>
                 <DescriptionDetails className="!text-base !leading-5 sm:!py-2">
-                  {device.bandage_name}
+                  {device.currentBandage || ""}
                 </DescriptionDetails>
               </DescriptionList>
             </div>
@@ -148,7 +153,7 @@ const ViewScreen = ({ device }) => {
                 </DescriptionTerm>
                 <DescriptionDetails className="!py-6">
                   <Stat
-                    value={device.current?.top || ""}
+                    value={device.current?.top || 0}
                     change={`${device.percentageDifference?.top || "0%"}`}
                     className="text-primary-tail_grids"
                   />
@@ -164,7 +169,7 @@ const ViewScreen = ({ device }) => {
                 </DescriptionTerm>
                 <DescriptionDetails className="!py-6">
                   <Stat
-                    value={device.current?.middle || ""}
+                    value={device.current?.middle || 0}
                     change={`${device.percentageDifference?.middle || "0%"}`}
                     className="text-primary-tail_grids"
                   />
@@ -180,7 +185,7 @@ const ViewScreen = ({ device }) => {
                 </DescriptionTerm>
                 <DescriptionDetails className="!py-6">
                   <Stat
-                    value={device.current?.bottom || ""}
+                    value={device.current?.bottom || 0}
                     change={`${device.percentageDifference?.bottom || "0%"}`}
                     className="text-primary-tail_grids"
                   />
