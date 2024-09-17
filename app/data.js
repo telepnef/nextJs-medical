@@ -37,27 +37,27 @@ export const dateValues = [
     label: "Last 24 hours",
   },
   {
-    value: 56,
+    value: 168,
     label: "Last 7 days",
   },
   {
-    value: 120,
+    value: 360,
     label: "Last 15 days",
   },
   {
-    value: 240,
+    value: 720,
     label: "Last 30 days",
   },
   {
-    value: 720,
+    value: 2160,
     label: "Last 3 months",
   },
   {
-    value: 1440,
+    value: 4320,
     label: "Last 6 months",
   },
   {
-    value: 2880,
+    value: 8640,
     label: "Last 1 year",
   },
 ];

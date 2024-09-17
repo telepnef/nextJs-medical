@@ -26,3 +26,9 @@ body {
     text-wrap: balance;
   }
 }
+
+.highcharts-tooltip {
+  top: 5px !important;
+  right: 270px !important;
+  left: auto !important;
+}

@@ -1,96 +1,139 @@
 "use client";
 
-import dynamic from "next/dynamic";
-import { Subheading } from "./catalyst/heading";
-const ApexChart = dynamic(() => import("react-apexcharts"), { ssr: false });
+import HighchartsReact from "highcharts-react-official";
+import Highcharts from "highcharts/highstock";
+import { useRef } from "react";
 
-const Chart = ({ reading, name, color }) => {
+const Chart = ({ reading, values, valueName, filterHours }) => {
+  const dateToFilter = new Date();
+  dateToFilter.setTime(dateToFilter.getTime() - filterHours * 60 * 60 * 1000);
+
+  const filteredValues = values.filter((value) => {
+    const valueDate = new Date(value[valueName].date);
+    if (valueDate.getTime() > dateToFilter.getTime()) {
+      return value;
+    }
+  });
+
+  const chartComponentRef = useRef();
+
   const options = {
-    chart: {
-      height: "100%",
-      maxWidth: "100%",
-      type: "line",
-      fontFamily: "Inter, sans-serif",
-      dropShadow: {
+    title: {
+      text: reading,
+      align: "left",
+      x: 40,
+      y: 30,
+      margin: 25,
+      style: {
+        fontSize: "1.75rem",
+      },
+    },
+
+    subtitle: {
+      text: "Pressure (mmHg)",
+      align: "left",
+      x: 40,
+      y: 55,
+      style: {
+        fontSize: "1rem",
+      },
+    },
+
+    yAxis: {
+      title: {
         enabled: false,
       },
-      toolbar: {
-        show: false,
-      },
+      lineColor: "#A0ACB7",
+      lineWidth: 1,
+      gridLineWidth: 0,
     },
-    tooltip: {
-      enabled: true,
-      x: {
-        show: false,
+
+    xAxis: {
+      categories: filteredValues.map((value) => {
+        const date = value[valueName].date;
+
+        return date;
+      }),
+      title: {
+        enabled: false,
       },
+      lineColor: "#A0ACB7",
+      gridLineColor: "#E7E7E7",
+      gridLineDashStyle: "Solid",
+      gridLineWidth: 1,
     },
-    dataLabels: {
+
+    legend: {
       enabled: false,
     },
-    stroke: {
-      width: 6,
-    },
-    grid: {
-      show: true,
-      strokeDashArray: 4,
-      padding: {
-        left: 2,
-        right: 2,
-        top: -26,
+
+    plotOptions: {
+      series: {
+        label: {
+          connectorAllowed: false,
+        },
       },
+    },
+
+    color: "#2CA8B1",
+    chart: {
+      borderColor: "#E6E6E6",
+      borderWidth: 1,
+      borderRadius: 6,
+      height: 450,
     },
     series: [
       {
-        name,
-        data: [30, 20, 35, 20, 30, 15, 25],
-        color,
+        data: filteredValues.map((value) => ({
+          y: value[valueName].value,
+          color: "#2CA8B1",
+        })),
       },
     ],
-    legend: {
-      show: false,
-    },
-    stroke: {
-      curve: "smooth",
-    },
-    xaxis: {
-      categories: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
-      labels: {
-        show: true,
-        style: {
-          fontFamily: "Inter, sans-serif",
-          cssClass: "text-xs font-normal fill-gray-500 dark:fill-gray-400",
+
+    responsive: {
+      rules: [
+        {
+          condition: {
+            maxWidth: 500,
+          },
         },
-      },
-      axisBorder: {
-        show: false,
-      },
-      axisTicks: {
-        show: false,
-      },
+      ],
     },
-    yaxis: {
-      show: false,
+
+    tooltip: {
+      formatter: function (tooltip) {
+        console.log(this);
+        const timestamp = new Date(this.x);
+        const timestampString = `${timestamp.getDate()} ${timestamp.toLocaleString("default", { month: "short" })} ${timestamp.getFullYear()} ${timestamp.getHours()}:${timestamp.getMinutes()}`;
+        console.log(timestamp.getDate());
+
+        return `<div class="bg-white border-primary-green_6 text-primary-dark_2 min-w-60 rounded-lg border-2 border-solid px-4 py-3">
+                  <p class="mb-1 leading-4">
+                    <strong class="text-[10px]">timestamp</strong>
+                    <br />
+                    <span class="text-xs">${timestampString}</span>
+                  </p>
+                  <p class="leading-4">
+                    <strong class="text-[10px]">pressure recorded</strong>
+                    <br />
+                    <strong class="text-lg">C - ${this.y}</strong>
+                    <span class="text-[20px]">mmHg</span>
+                  </p>
+                </div>`;
+      },
+      useHTML: true,
+      shadow: false,
+      backgroundColor: "transparent",
     },
   };
 
   return (
-    <div className="mb-6 w-full max-w-full rounded-lg border border-solid border-primary-gray_1 bg-white p-4">
-      <div className="mb-5">
-        <Subheading
-          className="mb-2 !text-[28px] !font-bold leading-[30px]"
-          level={3}
-        >
-          {reading}
-        </Subheading>
-        <div className="text-base leading-6">Pressure (mmHg)</div>
-      </div>
-      <ApexChart
-        className="[&_text:first-child]:translate-x-3.5"
-        type="line"
+    <div className="relative mb-6">
+      <HighchartsReact
+        highcharts={Highcharts}
         options={options}
-        series={options.series}
-        height={options.chart.height}
-        width={options.chart.width}
+        ref={chartComponentRef}
       />
     </div>
   );

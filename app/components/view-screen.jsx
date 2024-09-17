@@ -26,11 +26,34 @@ import Chart from "./chart";
 import { Stat } from "./stat";
 import { ActiveIcon, DateSelectorIcon, SelectIcon } from "./svg-icons";
 
+const Charts = ({ device, filterHours }) => {
+  return (
+    <>
+      <Chart
+        reading="C"
+        values={device.topValues}
+        valueName="topValue"
+        filterHours={filterHours}
+      />
+      <Chart
+        reading="B1"
+        values={device.middleValues}
+        valueName="middleValue"
+        filterHours={filterHours}
+      />
+      <Chart
+        reading="B"
+        values={device.bottomValues}
+        valueName="bottomValue"
+        filterHours={filterHours}
+      />
+    </>
+  );
+};
+
 const ViewScreen = ({ device }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [filterDate, setFilterDate] = useState(1);
-
-  const { id } = device;
+  const [filterDate, setFilterDate] = useState(8640);
 
   return (
     <>
@@ -70,7 +93,6 @@ const ViewScreen = ({ device }) => {
             <DescriptionDetails>
               {device.lastBandageChange || ""}&nbsp;
               <span className="font-normal">
-                {" "}
                 ({device.lastBandageChangeTimeStamp || ""})
               </span>
             </DescriptionDetails>
@@ -109,14 +131,14 @@ const ViewScreen = ({ device }) => {
                   Start date
                 </DescriptionTerm>
                 <DescriptionDetails className="!text-base !leading-5 sm:!py-2">
-                  06/02/24?
+                  {device.treatmentStartTimeStamp || ""}
                 </DescriptionDetails>
 
                 <DescriptionTerm className="!text-base !leading-5 sm:!py-2">
                   Duration
                 </DescriptionTerm>
                 <DescriptionDetails className="!text-base !leading-5 sm:!py-2">
-                  33 days?
+                  {device.treatmentStart || ""}
                 </DescriptionDetails>
               </DescriptionList>
 
@@ -212,7 +234,7 @@ const ViewScreen = ({ device }) => {
                   outline
                 >
                   <DateSelectorIcon />
-                  Showing:{" "}
+                  Showing:
                   {dateValues.find((date) => date.value === filterDate).label}
                   <SelectIcon className="mr-2 [&_path]:fill-primary-green_5" />
                 </DropdownButton>
@@ -232,9 +254,8 @@ const ViewScreen = ({ device }) => {
               </Dropdown>
             </div>
 
-            <Chart reading="C" name={device.nickName} color="#4CC2CB" />
-            <Chart reading="B1" name={device.nickName} color="#C21A88" />
-            <Chart reading="B" name={device.nickName} color="#C69D00" />
+            {/* <Line options={options} data={data} /> */}
+            <Charts device={device} filterHours={filterDate} />
           </div>
         </DialogBody>
       </Dialog>
