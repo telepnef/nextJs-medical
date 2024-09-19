@@ -85,7 +85,7 @@ const Chart = ({ reading, values, valueName, filterHours }) => {
     series: [
       {
         data: filteredValues.map((value) => ({
-          y: value[valueName].value,
+          y: value[valueName].value === 'Low' ? 0 : value[valueName].value,
           color: "#2CA8B1",
         })),
       },
